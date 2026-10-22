@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f5f5f7" />
+    <title>WebLOGO</title>
+    <meta name="description" content="Create drawings with LOGO turtle graphics in your browser. Write commands, explore shapes, and learn programming with WebLOGO." />
+    <link rel="canonical" href="https://shishir-dey.github.io/WebLOGO/" />
+    <link rel="icon" href="%BASE_URL%favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="16x16" href="%BASE_URL%favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="%BASE_URL%favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="%BASE_URL%apple-touch-icon.png" />
+    <link rel="manifest" href="%BASE_URL%site.webmanifest" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="WebLOGO" />
+    <meta property="og:title" content="WebLOGO — LOGO Turtle Graphics" />
+    <meta property="og:description" content="Create drawings with LOGO turtle graphics in your browser. Write commands, explore shapes, and learn programming with WebLOGO." />
+    <meta property="og:url" content="https://shishir-dey.github.io/WebLOGO/" />
+    <meta property="og:image" content="https://shishir-dey.github.io/WebLOGO/WebLOGO.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="2000" />
+    <meta property="og:image:height" content="2000" />
+    <meta property="og:image:alt" content="WebLOGO wordmark on a white background" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="WebLOGO — LOGO Turtle Graphics" />
+    <meta name="twitter:description" content="Create drawings with LOGO turtle graphics in your browser. Write commands, explore shapes, and learn programming with WebLOGO." />
+    <meta name="twitter:image" content="https://shishir-dey.github.io/WebLOGO/WebLOGO.png" />
+    <meta name="twitter:image:alt" content="WebLOGO wordmark on a white background" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "@id": "https://shishir-dey.github.io/WebLOGO/#app",
+  "name": "WebLOGO",
+  "url": "https://shishir-dey.github.io/WebLOGO/",
+  "description": "Create drawings with LOGO turtle graphics in your browser. Write commands, explore shapes, and learn programming with WebLOGO.",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript and SVG support.",
+  "inLanguage": "en",
+  "image": "https://shishir-dey.github.io/WebLOGO/WebLOGO.png",
+  "isAccessibleForFree": true,
+  "license": "https://opensource.org/license/mit",
+  "author": {
+    "@type": "Person",
+    "name": "Shishir Dey"
+  }
+}
+    </script>
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="app.js"></script>
+  </head>
+  <body>
+    <header class="app-header">
+      <a class="brand" href="./" aria-label="WebLOGO home"><svg class="brand-logo" viewBox="0 760 2000 470" role="img" aria-label="WebLOGO"><image href="%BASE_URL%WebLOGO.png" width="2000" height="2000" /></svg></a>
+      <div class="header-actions">
+        <button id="help-button" class="info-button" aria-label="Command reference" aria-haspopup="dialog"><span aria-hidden="true">i</span></button>
+        <button id="reset" class="reset-button" aria-label="Clear canvas"></button>
+      </div>
+    </header>
+    <main class="workspace">
+      <section class="panel renderer" aria-label="Canvas">
+        <div class="canvas-scroll" tabindex="0" aria-label="Drawing canvas, scroll to explore">
+          <svg id="canvas" viewBox="0 0 1000 800" width="1000" height="800" role="img" aria-label="LOGO drawing canvas">
+            <defs><pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="12" cy="12" r="0.75" fill="#e6dfb9" /></pattern></defs>
+            <rect width="100%" height="100%" fill="url(#dots)" />
+            <g id="drawing" fill="none" stroke="#007aff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></g>
+            <path id="turtle" d="M 0 -10 L 7 7 L 0 4 L -7 7 Z" fill="#007aff" stroke="white" stroke-width="1.5" />
+          </svg>
+        </div>
+      </section>
+      <section class="panel console" aria-label="Command prompt">
+        <div class="console-scroll">
+          <div id="history" role="log" aria-live="polite" aria-label="Command history"></div>
+          <form id="command-form" autocomplete="off">
+            <label for="command" class="sr-only">Enter a LOGO command</label>
+            <span class="prompt-symbol" aria-hidden="true">›</span>
+            <input id="command" name="command" spellcheck="false" autocapitalize="off" autocorrect="off" enterkeyhint="send" />
+          </form>
+        </div>
+      </section>
+    </main>
+    <dialog id="help-dialog" aria-labelledby="help-title">
+      <header class="help-header"><h1 id="help-title">Commands</h1><button id="help-close" aria-label="Close command reference">×</button></header>
+      <div class="help-content"><table><thead><tr><th scope="col">Command</th><th scope="col">What it does</th></tr></thead><tbody>
+        <tr><td><code>FD 100</code></td><td>Move the turtle forward 100 steps.</td></tr>
+        <tr><td><code>RT 90</code></td><td>Turn the turtle to the right 90º.</td></tr>
+        <tr><td><code>LT 90</code></td><td>Turn the turtle to the left 90º.</td></tr>
+        <tr><td><code>BK 100</code></td><td>Move the turtle backwards 100 steps.</td></tr>
+        <tr><td><code>PU</code></td><td>Put the turtle’s pen up off the paper.</td></tr>
+        <tr><td><code>PD</code></td><td>Put the turtle’s pen back down on the paper.</td></tr>
+        <tr><td><code>CS</code></td><td>Clear the screen and start over.</td></tr>
+        <tr><td><code>HT</code></td><td>Hide the turtle (triangle).</td></tr>
+        <tr><td><code>ST</code></td><td>Show the turtle (triangle).</td></tr>
+        <tr><td><code>REPEAT 3 [...]</code></td><td>Repeat the commands 3 times.</td></tr>
+        <tr><td><code>HOME</code></td><td>Reset the turtle to the centre of the screen.</td></tr>
+        <tr><td><code>SETXY 20 20</code></td><td>Set the turtle’s X and Y position, relative to the centre.</td></tr>
+        <tr><td><code>ARC 90 50</code></td><td>Draw a 90º arc with radius 50, centred on the turtle.</td></tr>
+      </tbody></table></div>
+    </dialog>
+  </body>
+</html>

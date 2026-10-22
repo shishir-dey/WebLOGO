@@ -1,0 +1,25 @@
+{
+  "name": "weblogo",
+  "version": "1.0.0",
+  "description": "A web-based implementation of the LOGO programming language",
+  "homepage": "https://github.com/shishir-dey/WebLOGO#readme",
+  "bugs": {
+    "url": "https://github.com/shishir-dey/WebLOGO/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shishir-dey/WebLOGO.git"
+  },
+  "license": "MIT",
+  "author": "Shishir Dey",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "vite": "^8.3.5"
+  }
+}
