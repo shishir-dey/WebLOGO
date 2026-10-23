@@ -1,8 +1,9 @@
 import { parse, Turtle } from './logo.js';
+import { editCommand } from './keyboard.js';
 
 const drawing = document.querySelector('#drawing');
 const turtle = document.querySelector('#turtle');
-const history = document.querySelector('#history');
+const commandError = document.querySelector('#command-error');
 const input = document.querySelector('#command');
 const canvasViewport = document.querySelector('.canvas-scroll');
 const canvas = document.querySelector('#canvas');
@@ -38,28 +39,18 @@ function centerDrawing() {
 function reset() { model.reset(); updateTurtle(); centerDrawing(); }
 function run(source) {
   if (!source.trim()) return;
-  const entry = document.createElement('div');
-  entry.className = 'entry';
-  const command = document.createElement('div');
-  command.className = 'entry-command';
-  command.textContent = source;
-  const result = document.createElement('div');
-  result.className = 'entry-result';
+  commandError.hidden = true;
+  commandError.textContent = '';
   try {
     for (const command of parse(source)) model.execute(command);
     updateTurtle();
+    commands.push(source);
+    historyIndex = commands.length;
+    input.value = '';
   } catch (error) {
-    result.textContent = error.message;
-    result.classList.add('entry-error');
+    commandError.textContent = error.message;
+    commandError.hidden = false;
   }
-  entry.append(command);
-  if (result.textContent) entry.append(result);
-  history.append(entry);
-  const consoleViewport = document.querySelector('.console-scroll');
-  consoleViewport.scrollTop = consoleViewport.scrollHeight;
-  commands.push(source);
-  historyIndex = commands.length;
-  input.value = '';
   centerDrawing();
 }
 document.querySelector('#command-form').addEventListener('submit', event => { event.preventDefault(); run(input.value); });
@@ -81,4 +72,35 @@ helpDialog.addEventListener('click', event => {
   if (event.target !== helpDialog) return;
   const rect = helpDialog.getBoundingClientRect();
   if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) helpDialog.close();
+});
+
+// Read-only touch input prevents the system keyboard; desktop stays editable.
+const touchPrompt = window.matchMedia('(pointer: coarse)');
+function updateInputMode() { input.readOnly = touchPrompt.matches; }
+updateInputMode();
+touchPrompt.addEventListener('change', updateInputMode);
+const keyboard = document.querySelector('.keyboard');
+keyboard.addEventListener('pointerdown', event => {
+  // Keep the prompt's cursor/selection when clicking a key with a mouse.
+  if (event.pointerType === 'mouse' && event.target.closest('button')) event.preventDefault();
+});
+keyboard.addEventListener('click', event => {
+  const button = event.target.closest('button');
+  if (!button) return;
+  if (button.type !== 'submit') {
+    const edit = editCommand(input.value, input.selectionStart, input.selectionEnd, {
+      command: button.dataset.command, key: button.dataset.key, action: button.dataset.action,
+    });
+    input.value = edit.value;
+    input.setSelectionRange(edit.cursor, edit.cursor);
+    commandError.hidden = true;
+  }
+  input.focus({ preventScroll: true });
+});
+
+const gridButton = document.querySelector('#grid-button');
+gridButton.addEventListener('click', () => {
+  const enabled = gridButton.getAttribute('aria-pressed') !== 'true';
+  gridButton.setAttribute('aria-pressed', String(enabled));
+  canvasBackground.setAttribute('fill', enabled ? 'url(#grid)' : 'none');
 });
